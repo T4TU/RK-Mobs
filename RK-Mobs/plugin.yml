@@ -1,0 +1,7 @@
+name: RK-Mobs
+author: T4TU_
+version: 2
+depend: [RK-Core]
+main: me.t4tu.rkmobs.Mobs
+commands:
+    mobs:
