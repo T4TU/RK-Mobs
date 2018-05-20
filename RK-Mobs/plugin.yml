@@ -5,3 +5,4 @@ depend: [RK-Core]
 main: me.t4tu.rkmobs.Mobs
 commands:
     mobs:
+    spawner:

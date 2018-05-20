@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -16,7 +17,7 @@ public class MobsListener implements Listener {
 	private static final List<SpawnReason> reasons = Arrays.asList(SpawnReason.CHUNK_GEN, SpawnReason.NATURAL, SpawnReason.ENDER_PEARL, SpawnReason.DISPENSE_EGG, SpawnReason.SLIME_SPLIT, 
 			SpawnReason.LIGHTNING, SpawnReason.JOCKEY, SpawnReason.REINFORCEMENTS, SpawnReason.SPAWNER, SpawnReason.CHUNK_GEN, SpawnReason.SILVERFISH_BLOCK, SpawnReason.MOUNT, SpawnReason.EGG);
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onMobSpawn(CreatureSpawnEvent e) {
 		if (reasons.contains(e.getSpawnReason())) {
 			List<Mob> mobs = Mobs.getMobManager().getMobsByReplaceType(e.getEntityType());

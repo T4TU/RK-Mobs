@@ -12,8 +12,8 @@ public class BloodParticleEffect extends ParticleEffect {
 	
 	private HashMap<Integer, Integer> timers = new HashMap<Integer, Integer>();
 	
-	public BloodParticleEffect(String name, ParticleEffectID id) {
-		super(name, id);
+	public BloodParticleEffect() {
+		super("Haavoittunut", ParticleEffectID.BLOOD);
 	}
 	
 	public void tick(Entity entity) {

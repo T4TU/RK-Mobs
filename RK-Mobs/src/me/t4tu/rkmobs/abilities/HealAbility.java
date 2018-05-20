@@ -16,8 +16,8 @@ public class HealAbility extends Ability {
 	
 	private int healAmount;
 
-	public HealAbility(String name, AbilityID id, int healAmount) {
-		super(name, id);
+	public HealAbility(int healAmount) {
+		super("Parannusloitsu", AbilityID.HEAL);
 		this.healAmount = healAmount;
 	}
 	

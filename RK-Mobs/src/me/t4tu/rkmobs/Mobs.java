@@ -7,6 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.t4tu.rkcore.utils.CoreUtils;
+import me.t4tu.rkmobs.spawners.SpawnerCommand;
+import me.t4tu.rkmobs.spawners.SpawnerManager;
 
 public class Mobs extends JavaPlugin {
 	
@@ -14,6 +16,8 @@ public class Mobs extends JavaPlugin {
 	private static MobManager mobManager = new MobManager();
 	private static MobsListener mobsListener = new MobsListener();
 	private static MobsCommand mobsCommand = new MobsCommand();
+	private static SpawnerManager spawnerManager = new SpawnerManager();
+	private static SpawnerCommand spawnerCommand = new SpawnerCommand();
 	
 	private void registerCommand(String s, CommandExecutor c, boolean tabCompletion) {
 		getCommand(s).setExecutor(c);
@@ -29,8 +33,10 @@ public class Mobs extends JavaPlugin {
 		plugin = this;
 		saveConfig();
 		mobManager.loadMobsFromConfig();
+		spawnerManager.loadSpawnersFromConfig();
 		Bukkit.getPluginManager().registerEvents(mobsListener, this);
 		registerCommand("mobs", mobsCommand, false);
+		registerCommand("spawner", spawnerCommand, false);
 		
 		new BukkitRunnable() {
 			public void run() {
@@ -47,6 +53,7 @@ public class Mobs extends JavaPlugin {
 		new BukkitRunnable() {
 			public void run() {
 				mobManager.tickNametags();
+				spawnerManager.tickSpawners();
 			}
 		}.runTaskTimer(plugin, 20, 20);
 	}
@@ -69,5 +76,13 @@ public class Mobs extends JavaPlugin {
 	
 	public static MobsCommand getMobsCommand() {
 		return mobsCommand;
+	}
+	
+	public static SpawnerManager getSpawnerManager() {
+		return spawnerManager;
+	}
+	
+	public static SpawnerCommand getSpawnerCommand() {
+		return spawnerCommand;
 	}
 }

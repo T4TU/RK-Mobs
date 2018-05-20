@@ -8,31 +8,27 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Husk;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
 import me.t4tu.rkmobs.abilities.Ability;
-import me.t4tu.rkmobs.abilities.AbilityID;
 import me.t4tu.rkmobs.abilities.HealAbility;
-import me.t4tu.rkmobs.particles.BloodParticleEffect;
 import me.t4tu.rkmobs.particles.ParticleEffectID;
 import net.md_5.bungee.api.ChatColor;
 
 public class MobManager {
 	
-	private ArrayList<Mob> mobs = new ArrayList<Mob>();
-	private ArrayList<Integer> alreadyTickedAbilities = new ArrayList<Integer>();
-	private ArrayList<Integer> alreadyTickedParticleEffects = new ArrayList<Integer>();
-	private ArrayList<Integer> abilityCooldown = new ArrayList<Integer>();
-	private ArrayList<Integer> particleEffectCooldown = new ArrayList<Integer>();
+	private List<Mob> mobs = new ArrayList<Mob>();
+	private List<Integer> alreadyTickedAbilities = new ArrayList<Integer>();
+	private List<Integer> alreadyTickedParticleEffects = new ArrayList<Integer>();
+	private List<Integer> abilityCooldown = new ArrayList<Integer>();
+	private List<Integer> particleEffectCooldown = new ArrayList<Integer>();
 	
-	public ArrayList<Mob> getMobs() {
+	public List<Mob> getMobs() {
 		return mobs;
 	}
 	
@@ -214,17 +210,14 @@ public class MobManager {
 		if (mob.getAttackDamage() != -1) {
 			e.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(mob.getAttackDamage());
 		}
-		if (e.getType() == EntityType.ZOMBIE) {
-			Zombie zombie = (Zombie) e;
-			zombie.setBaby(mob.isBaby());
-		}
-		if (e.getType() == EntityType.PIG_ZOMBIE) {
-			PigZombie pigzombie = (PigZombie) e;
-			pigzombie.setBaby(mob.isBaby());
-		}
-		if (e.getType() == EntityType.HUSK) {
-			Husk husk = (Husk) e;
-			husk.setBaby(mob.isBaby());
+		if (e instanceof Ageable) {
+			Ageable ageable = (Ageable) e;
+			if (mob.isBaby()) {
+				ageable.setBaby();
+			}
+			else {
+				ageable.setAdult();
+			}
 		}
 	}
 	
@@ -250,7 +243,7 @@ public class MobManager {
 							for (String a : Mobs.getPlugin().getConfig().getConfigurationSection("mobs." + s + ".abilities").getKeys(false)) {
 								if (a.equalsIgnoreCase("heal")) {
 									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".healamount");
-									abilities.add(new HealAbility("Parannusloitsu", AbilityID.HEAL, healAmount));
+									abilities.add(new HealAbility(healAmount));
 								}
 							}
 						}
@@ -284,8 +277,10 @@ public class MobManager {
 						}
 						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".particleeffect")) {
 							String e = Mobs.getPlugin().getConfig().getString("mobs." + s + ".particleeffect");
-							if (e.equalsIgnoreCase("blood")) {
-								mob.setParticleEffect(new BloodParticleEffect("Haavoittunut", ParticleEffectID.BLOOD));
+							for (ParticleEffectID effect : ParticleEffectID.values()) {
+								if (effect.toString().equalsIgnoreCase(e)) {
+									mob.setParticleEffect(effect.newHandler());
+								}
 							}
 						}
 						mobs.add(mob);
