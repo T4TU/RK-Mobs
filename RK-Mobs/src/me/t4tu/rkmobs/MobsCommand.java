@@ -127,6 +127,7 @@ public class MobsCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " Spawnaamisen todennäköisyys: " + tc2 + mob.getSpawnChance());
 									p.sendMessage(tc1 + " Tyyppi: " + tc2 + mob.getType().toString());
 									p.sendMessage(tc1 + " Korvattava tyyppi: " + tc2 + mob.getReplaceType().toString());
+									p.sendMessage(tc1 + " Kädessä oleva esine: " + tc2 + mob.getHand().getType().toString() + " (" + mob.getHandDropChance() + ")");
 									p.sendMessage(tc1 + " Päähine: " + tc2 + mob.getHelmet().getType().toString() + " (" + mob.getHelmetDropChance() + ")");
 									p.sendMessage(tc1 + " Rintapanssari: " + tc2 + mob.getChestplate().getType().toString() + " (" + mob.getChestplateDropChance() + ")");
 									p.sendMessage(tc1 + " Housut: " + tc2 + mob.getLeggings().getType().toString() + " (" + mob.getLeggingsDropChance() + ")");
