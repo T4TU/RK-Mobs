@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import me.t4tu.rkmobs.abilities.Ability;
 import me.t4tu.rkmobs.abilities.HealAbility;
+import me.t4tu.rkmobs.abilities.SilentHealAbility;
 import me.t4tu.rkmobs.particles.ParticleEffectID;
 import net.md_5.bungee.api.ChatColor;
 
@@ -244,6 +245,10 @@ public class MobManager {
 								if (a.equalsIgnoreCase("heal")) {
 									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".healamount");
 									abilities.add(new HealAbility(healAmount));
+								}
+								if (a.equalsIgnoreCase("silent-heal")) {
+									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".healamount");
+									abilities.add(new SilentHealAbility(healAmount));
 								}
 							}
 						}
