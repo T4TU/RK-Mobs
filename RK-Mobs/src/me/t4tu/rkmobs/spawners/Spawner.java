@@ -16,9 +16,10 @@ public class Spawner {
 	private int spawnDelay;
 	private int maxRange;
 	private int maxAmount;
+	private int maxHeight;
 	private List<SubSpawner> subSpawners;
 	
-	public Spawner(String name, Mob mob, int activationRange, int spawnRange, int spawnDelay, int maxRange, int maxAmount, List<Location> locations) {
+	public Spawner(String name, Mob mob, int activationRange, int spawnRange, int spawnDelay, int maxRange, int maxAmount, int maxHeight, List<Location> locations) {
 		this.name = name;
 		this.mob = mob;
 		this.activationRange = activationRange;
@@ -26,6 +27,7 @@ public class Spawner {
 		this.spawnDelay = spawnDelay;
 		this.maxRange = maxRange;
 		this.maxAmount = maxAmount;
+		this.maxHeight = maxHeight;
 		subSpawners = new ArrayList<SubSpawner>();
 		for (Location location : locations) {
 			subSpawners.add(new SubSpawner(this, location));
@@ -58,6 +60,10 @@ public class Spawner {
 	
 	public int getMaxAmount() {
 		return maxAmount;
+	}
+	
+	public int getMaxHeight() {
+		return maxHeight;
 	}
 	
 	public List<SubSpawner> getSubSpawners() {

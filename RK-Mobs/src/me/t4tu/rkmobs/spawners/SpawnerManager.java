@@ -6,6 +6,8 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -67,6 +69,7 @@ public class SpawnerManager {
 						int spawnDelay = Mobs.getPlugin().getConfig().getInt("spawners." + s + ".spawn-delay");
 						int maxRange = Mobs.getPlugin().getConfig().getInt("spawners." + s + ".max-range");
 						int maxAmount = Mobs.getPlugin().getConfig().getInt("spawners." + s + ".max-amount");
+						int maxHeight = Mobs.getPlugin().getConfig().getInt("spawners." + s + ".max-height");
 						List<Location> locations = new ArrayList<Location>();
 						List<String> locationStrings = Mobs.getPlugin().getConfig().getStringList("spawners." + s + ".locations");
 						for (String string : locationStrings) {
@@ -74,7 +77,7 @@ public class SpawnerManager {
 							Location location = new Location(Bukkit.getWorld(l[0]), Integer.parseInt(l[1]), Integer.parseInt(l[2]), Integer.parseInt(l[3]));
 							locations.add(location);
 						}
-						Spawner spawner = new Spawner(name, mob, activationRange, spawnRange, spawnDelay, maxRange, maxAmount, locations);
+						Spawner spawner = new Spawner(name, mob, activationRange, spawnRange, spawnDelay, maxRange, maxAmount, maxHeight, locations);
 						spawners.add(spawner);
 					}
 				}
@@ -102,14 +105,33 @@ public class SpawnerManager {
 					i = spawner.getMaxAmount() - 1;
 				}
 				for (int c = 0; c < spawner.getMaxAmount() - i; c++) {
-					int x = r.nextInt(spawner.getSpawnRange() * 2 + 1) - spawner.getSpawnRange();
-					int z = r.nextInt(spawner.getSpawnRange() * 2 + 1) - spawner.getSpawnRange();
-					int y = location.getWorld().getHighestBlockYAt(location.getBlockX() + x, location.getBlockZ() + z);
-					Entity replaceEntity = location.getWorld().spawnEntity(new Location(location.getWorld(), location.getBlockX() + x, y, location.getBlockZ() + z), spawner.getMob().getType());
-					Mobs.getMobManager().spawnMob(spawner.getMob(), replaceEntity);
+					Location l = getSpawnLocation(subSpawner, r);
+					if (l != null) {
+						Entity replaceEntity = location.getWorld().spawnEntity(l, spawner.getMob().getType());
+						Mobs.getMobManager().spawnMob(spawner.getMob(), replaceEntity);
+					}
 				}
 				subSpawner.setLastSpawn(0);
 			}
 		}
+	}
+	
+	private Location getSpawnLocation(SubSpawner subSpawner, Random r) {
+		Spawner spawner = subSpawner.getParent();
+		Location location = subSpawner.getLocation();
+		if (spawner.getMaxHeight() >= 0) {
+			for (int t = 0; t < 10; t++) {
+				int x = r.nextInt(spawner.getSpawnRange() * 2 + 1) - spawner.getSpawnRange();
+				int z = r.nextInt(spawner.getSpawnRange() * 2 + 1) - spawner.getSpawnRange();
+				for (int y = -2; y < spawner.getMaxHeight(); y++) {
+					Block block = location.getWorld().getBlockAt(location.getBlockX() + x, location.getBlockY() + y, location.getBlockZ() + z);
+					Block relative = block.getRelative(BlockFace.UP);
+					if (block != null && block.getType() != null && !block.getType().isSolid() && relative != null && relative.getType() != null && !relative.getType().isSolid()) {
+						return block.getLocation().clone().add(0.5, 0, 0.5);
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

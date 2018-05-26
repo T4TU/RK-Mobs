@@ -3,6 +3,7 @@ package me.t4tu.rkmobs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class MobsListener implements Listener {
 	
@@ -45,5 +47,13 @@ public class MobsListener implements Listener {
 				}
 			}
 		}.runTaskLater(Mobs.getPlugin(), 1);
+	}
+	
+	@EventHandler
+	public void onPLayerInteractEntity(PlayerInteractEntityEvent e) {
+		Mob mob = Mobs.getMobManager().getMob(e.getRightClicked());
+		if (mob != null && mob.getType() == EntityType.VILLAGER) {
+			e.setCancelled(true);
+		}
 	}
 }

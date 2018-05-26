@@ -28,7 +28,7 @@ public class SpawnerCommand implements CommandExecutor {
 				if (CoreUtils.hasRank(p, "ylläpitäjä")) {
 					if (args.length >= 1) {
 						if (args[0].equalsIgnoreCase("add")) {
-							if (args.length >= 8) {
+							if (args.length >= 9) {
 								try {
 									String name = args[1];
 									String mob = args[2];
@@ -37,12 +37,14 @@ public class SpawnerCommand implements CommandExecutor {
 									int spawnDelay = Integer.parseInt(args[5]);
 									int maxRange = Integer.parseInt(args[6]);
 									int maxAmount = Integer.parseInt(args[7]);
+									int maxHeight = Integer.parseInt(args[8]);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".mob", mob);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".activation-range", activationRange);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".spawn-range", spawnRange);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".spawn-delay", spawnDelay);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".max-range", maxRange);
 									Mobs.getPlugin().getConfig().set("spawners." + name + ".max-amount", maxAmount);
+									Mobs.getPlugin().getConfig().set("spawners." + name + ".max-height", maxHeight);
 									Mobs.getPlugin().saveConfig();
 									Mobs.getSpawnerManager().loadSpawnersFromConfig();
 									p.sendMessage(tc2 + "Lisättiin uusi spawneri " + tc1 + name + tc2 + "!");
@@ -52,7 +54,7 @@ public class SpawnerCommand implements CommandExecutor {
 								}
 							}
 							else {
-								p.sendMessage(usage + "/spawner add <nimi> <mobi> <activationRange> <spawnRange> <spawnDelay> <maxRange> <maxAmount>");
+								p.sendMessage(usage + "/spawner add <nimi> <mobi> <activationRange> <spawnRange> <spawnDelay> <maxRange> <maxAmount> <maxHeight>");
 							}
 						}
 						else if (args[0].equalsIgnoreCase("remove")) {
