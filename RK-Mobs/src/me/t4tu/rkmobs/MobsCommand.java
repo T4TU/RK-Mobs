@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import me.t4tu.rkcore.utils.CoreUtils;
 import me.t4tu.rkmobs.abilities.Ability;
@@ -133,11 +134,27 @@ public class MobsCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " Housut: " + tc2 + mob.getLeggings().getType().toString() + " (" + mob.getLeggingsDropChance() + ")");
 									p.sendMessage(tc1 + " Jalkineet: " + tc2 + mob.getBoots().getType().toString() + " (" + mob.getBootsDropChance() + ")");
 									p.sendMessage(tc1 + " Vauva: " + tc2 + mob.isBaby());
+									p.sendMessage(tc1 + " Hiljainen: " + tc2 + mob.isSilent());
+									p.sendMessage(tc1 + " Itsestään despawnaava: " + tc2 + mob.isRemovedWhenFarAway());
+									p.sendMessage(tc1 + " Tiputa vain ehjiä esineitä: " + tc2 + mob.isAlwaysDropFullDurability());
+									p.sendMessage(tc1 + " Estä Vanilla-armorit: " + tc2 + mob.isCancelVanillaArmor());
 									p.sendMessage(tc1 + " Nopeus: " + tc2 + mob.getSpeed());
-									p.sendMessage(tc1 + " Hyökkäysnopeus: " + tc2 + mob.getAttackSpeed());
 									p.sendMessage(tc1 + " Hyökkäyksen voimakkuus: " + tc2 + mob.getAttackDamage());
 									if (mob.getParticleEffect() != null) {
 										p.sendMessage(tc1 + " Partikkeliefekti: " + tc2 + mob.getParticleEffect().getName() + " (" + mob.getParticleEffect().getID().toString() + ")");
+									}
+									else {
+										p.sendMessage(tc1 + " Partikkeliefekti: " + tc3 + "Ei partikkeliefektiä");
+									}
+									if (mob.getPotionEffects() != null && !mob.getPotionEffects().isEmpty()) {
+										p.sendMessage(tc1 + " Efektit:");
+										for (PotionEffect potionEffect : mob.getPotionEffects()) {
+											p.sendMessage(tc2 + "  - " + tc1 + potionEffect.getType().getName() + tc2 + " (Taso: " + (potionEffect.getAmplifier() + 1) + 
+													", kesto: " + (potionEffect.getDuration() / 20) + "s, ambient: " + potionEffect.isAmbient() + ", partikkelit: " + potionEffect.hasParticles() + ")");
+										}
+									}
+									else {
+										p.sendMessage(tc1 + " Efektit: " + tc3 + "Ei efektejä");
 									}
 									if (!mob.getAbilities().isEmpty()) {
 										p.sendMessage(tc1 + " Taidot:");

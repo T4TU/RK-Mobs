@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import me.t4tu.rkmobs.abilities.Ability;
 import me.t4tu.rkmobs.particles.ParticleEffect;
@@ -23,15 +24,19 @@ public class Mob {
 	private ItemStack hand;
 	private List<Ability> abilities;
 	private boolean baby = false;
+	private boolean silent = false;
+	private boolean removeWhenFarAway = true;
+	private boolean alwaysDropFullDurability = false;
+	private boolean cancelVanillaArmor = false;
 	private float helmetDropChance = 0;
 	private float chestplateDropChance = 0;
 	private float leggingsDropChance = 0;
 	private float bootsDropChance = 0;
 	private float handDropChance = 0;
 	private double speed = -1;
-	private double attackSpeed = -1;
 	private double attackDamage = -1;
 	private ParticleEffect particleEffect = null;
+	private List<PotionEffect> potionEffects = null;
 	
 	public Mob(String name, String displayName, int health, int spawnChance, EntityType type, EntityType replaceType, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack hand, List<Ability> abilities) {
 		this.name = name;
@@ -100,6 +105,22 @@ public class Mob {
 		return baby;
 	}
 	
+	public boolean isSilent() {
+		return silent;
+	}
+	
+	public boolean isRemovedWhenFarAway() {
+		return removeWhenFarAway;
+	}
+	
+	public boolean isAlwaysDropFullDurability() {
+		return alwaysDropFullDurability;
+	}
+	
+	public boolean isCancelVanillaArmor() {
+		return cancelVanillaArmor;
+	}
+	
 	public float getHelmetDropChance() {
 		return helmetDropChance;
 	}
@@ -124,10 +145,6 @@ public class Mob {
 		return speed;
 	}
 	
-	public double getAttackSpeed() {
-		return attackSpeed;
-	}
-	
 	public double getAttackDamage() {
 		return attackDamage;
 	}
@@ -136,8 +153,28 @@ public class Mob {
 		return particleEffect;
 	}
 	
+	public List<PotionEffect> getPotionEffects() {
+		return potionEffects;
+	}
+	
 	public void setBaby(boolean baby) {
 		this.baby = baby;
+	}
+	
+	public void setSilent(boolean silent) {
+		this.silent = silent;
+	}
+	
+	public void setRemoveWhenFarAway(boolean removeWhenFarAway) {
+		this.removeWhenFarAway = removeWhenFarAway;
+	}
+	
+	public void setAlwaysDropFullDurability(boolean alwaysDropFullDurability) {
+		this.alwaysDropFullDurability = alwaysDropFullDurability;
+	}
+	
+	public void setCancelVanillaArmor(boolean cancelVanillaArmor) {
+		this.cancelVanillaArmor = cancelVanillaArmor;
 	}
 	
 	public void setHelmetDropChance(float helmetDropChance) {
@@ -164,15 +201,15 @@ public class Mob {
 		this.speed = speed;
 	}
 	
-	public void setAttackSpeed(double attackSpeed) {
-		this.attackSpeed = attackSpeed;
-	}
-	
 	public void setAttackDamage(double attackDamage) {
 		this.attackDamage = attackDamage;
 	}
 	
 	public void setParticleEffect(ParticleEffect particleEffect) {
 		this.particleEffect = particleEffect;
+	}
+	
+	public void setPotionEffects(List<PotionEffect> potionEffects) {
+		this.potionEffects = potionEffects;
 	}
 }

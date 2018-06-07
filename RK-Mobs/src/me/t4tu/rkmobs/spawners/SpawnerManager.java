@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import me.t4tu.rkmobs.Mob;
@@ -107,7 +108,7 @@ public class SpawnerManager {
 				for (int c = 0; c < spawner.getMaxAmount() - i; c++) {
 					Location l = getSpawnLocation(subSpawner, r);
 					if (l != null) {
-						Entity replaceEntity = location.getWorld().spawnEntity(l, spawner.getMob().getType());
+						LivingEntity replaceEntity = (LivingEntity) location.getWorld().spawnEntity(l, spawner.getMob().getType());
 						Mobs.getMobManager().spawnMob(spawner.getMob(), replaceEntity);
 					}
 				}

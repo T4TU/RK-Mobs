@@ -101,6 +101,7 @@ public class SpawnerCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " spawnDelay: " + tc2 + spawner.getSpawnDelay());
 									p.sendMessage(tc1 + " maxRange: " + tc2 + spawner.getMaxRange());
 									p.sendMessage(tc1 + " maxAmount: " + tc2 + spawner.getMaxAmount());
+									p.sendMessage(tc1 + " maxHeight: " + tc2 + spawner.getMaxHeight());
 									p.sendMessage("");
 								}
 								else {

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
@@ -14,7 +15,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import me.t4tu.rkcore.utils.CoreUtils;
 import me.t4tu.rkmobs.abilities.Ability;
 import me.t4tu.rkmobs.abilities.HealAbility;
 import me.t4tu.rkmobs.abilities.SilentHealAbility;
@@ -182,43 +186,71 @@ public class MobManager {
 	}
 	
 	public void spawnMob(Mob mob, Entity entity) {
-		LivingEntity e = (LivingEntity) entity;
-		if (e.getType() != mob.getType()) {
-			Location location = e.getLocation();
-			e.remove();
-			e = (LivingEntity) location.getWorld().spawnEntity(location, mob.getType());
-		}
-		e.setCustomName(mob.getDisplayName() + "§7 " + (int) mob.getHealth() + "❤");
-		e.setCustomNameVisible(true);
-		e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(mob.getHealth());
-		e.setHealth(mob.getHealth());
-		e.getEquipment().setHelmet(mob.getHelmet());
-		e.getEquipment().setChestplate(mob.getChestplate());
-		e.getEquipment().setLeggings(mob.getLeggings());
-		e.getEquipment().setBoots(mob.getBoots());
-		e.getEquipment().setItemInMainHand(mob.getHand());
-		e.getEquipment().setHelmetDropChance(mob.getHelmetDropChance());
-		e.getEquipment().setChestplateDropChance(mob.getChestplateDropChance());
-		e.getEquipment().setLeggingsDropChance(mob.getLeggingsDropChance());
-		e.getEquipment().setBootsDropChance(mob.getBootsDropChance());
-		e.getEquipment().setItemInMainHandDropChance(mob.getHandDropChance());
-		if (mob.getSpeed() != -1) {
-			e.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(mob.getSpeed());
-		}
-		if (mob.getAttackSpeed() != -1) {
-			e.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(mob.getAttackSpeed());
-		}
-		if (mob.getAttackDamage() != -1) {
-			e.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(mob.getAttackDamage());
-		}
-		if (e instanceof Ageable) {
-			Ageable ageable = (Ageable) e;
-			if (mob.isBaby()) {
-				ageable.setBaby();
+		if (entity instanceof LivingEntity) {
+			LivingEntity e = (LivingEntity) entity;
+			if (e.getType() != mob.getType()) {
+				Location location = e.getLocation();
+				e.remove();
+				e = (LivingEntity) location.getWorld().spawnEntity(location, mob.getType());
+			}
+			e.setCustomName(mob.getDisplayName() + "§7 " + (int) mob.getHealth() + "❤");
+			e.setCustomNameVisible(false);
+			e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(mob.getHealth());
+			e.setHealth(mob.getHealth());
+			ItemStack temp = CoreUtils.getItem(Material.WOOD_BUTTON, "§cx", null, 1);
+			if (CoreUtils.isNotAir(mob.getHelmet()) || !mob.isCancelVanillaArmor()) {
+				e.getEquipment().setHelmet(mob.getHelmet());
 			}
 			else {
-				ageable.setAdult();
+				e.getEquipment().setHelmet(temp);
 			}
+			if (CoreUtils.isNotAir(mob.getChestplate()) || !mob.isCancelVanillaArmor()) {
+				e.getEquipment().setChestplate(mob.getChestplate());
+			}
+			else {
+				e.getEquipment().setChestplate(temp);
+			}
+			if (CoreUtils.isNotAir(mob.getLeggings()) || !mob.isCancelVanillaArmor()) {
+				e.getEquipment().setLeggings(mob.getLeggings());
+			}
+			else {
+				e.getEquipment().setLeggings(temp);
+			}
+			if (CoreUtils.isNotAir(mob.getBoots()) || !mob.isCancelVanillaArmor()) {
+				e.getEquipment().setBoots(mob.getBoots());
+			}
+			else {
+				e.getEquipment().setBoots(temp);
+			}
+			e.getEquipment().setItemInMainHand(mob.getHand());
+			e.getEquipment().setHelmetDropChance(mob.getHelmetDropChance());
+			e.getEquipment().setChestplateDropChance(mob.getChestplateDropChance());
+			e.getEquipment().setLeggingsDropChance(mob.getLeggingsDropChance());
+			e.getEquipment().setBootsDropChance(mob.getBootsDropChance());
+			e.getEquipment().setItemInMainHandDropChance(mob.getHandDropChance());
+			if (mob.getSpeed() != -1) {
+				e.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(mob.getSpeed());
+			}
+			if (mob.getAttackDamage() != -1) {
+				e.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(mob.getAttackDamage());
+			}
+			if (e instanceof Ageable) {
+				Ageable ageable = (Ageable) e;
+				if (mob.isBaby()) {
+					ageable.setBaby();
+				}
+				else {
+					ageable.setAdult();
+				}
+			}
+			e.setSilent(mob.isSilent());
+			e.setRemoveWhenFarAway(mob.isRemovedWhenFarAway());
+			if (mob.getPotionEffects() != null && !mob.getPotionEffects().isEmpty()) {
+				e.addPotionEffects(mob.getPotionEffects());
+			}
+		}
+		else {
+			Bukkit.getConsoleSender().sendMessage("Ei voitu spawnata mobia '" + mob.getName() + "', ei ole LivingEntity");
 		}
 	}
 	
@@ -243,50 +275,48 @@ public class MobManager {
 						if (Mobs.getPlugin().getConfig().getConfigurationSection("mobs." + s + ".abilities") != null) {
 							for (String a : Mobs.getPlugin().getConfig().getConfigurationSection("mobs." + s + ".abilities").getKeys(false)) {
 								if (a.equalsIgnoreCase("heal")) {
-									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".healamount");
+									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".heal-amount");
 									abilities.add(new HealAbility(healAmount));
 								}
 								if (a.equalsIgnoreCase("silent-heal")) {
-									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".healamount");
+									int healAmount = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".abilities." + a + ".heal-amount");
 									abilities.add(new SilentHealAbility(healAmount));
 								}
 							}
 						}
 						Mob mob = new Mob(name, displayName, health, spawnChance, type, replaceType, helmet, chestplate, leggings, boots, hand, abilities);
-						if (Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".baby")) {
-							mob.setBaby(true);
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".helmetdropchance")) {
-							mob.setHelmetDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".helmetdropchance"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".chestplatedropchance")) {
-							mob.setChestplateDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".chestplatedropchance"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".leggingsdropchance")) {
-							mob.setLeggingsDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".leggingsdropchance"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".bootsdropchance")) {
-							mob.setBootsDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".bootsdropchance"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".handdropchance")) {
-							mob.setHandDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".handdropchance"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".speed")) {
-							mob.setSpeed(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".speed"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".attackspeed")) {
-							mob.setAttackSpeed(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".attackspeed"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".attackdamage")) {
-							mob.setAttackDamage(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".attackdamage"));
-						}
-						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".particleeffect")) {
-							String e = Mobs.getPlugin().getConfig().getString("mobs." + s + ".particleeffect");
+						mob.setBaby(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".baby", false));
+						mob.setSilent(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".silent", false));
+						mob.setRemoveWhenFarAway(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".remove-when-far-away", true));
+						mob.setAlwaysDropFullDurability(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".always-drop-full-durability", false));
+						mob.setCancelVanillaArmor(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".cancel-vanilla-armor", false));
+						mob.setHelmetDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".helmet-drop-chance", 0));
+						mob.setChestplateDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".chestplate-drop-chance", 0));
+						mob.setLeggingsDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".leggings-drop-chance", 0));
+						mob.setBootsDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".boots-drop-chance", 0));
+						mob.setHandDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".hand-drop-chance", 0));
+						mob.setSpeed(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".speed", -1));
+						mob.setAttackDamage(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".attack-damage", -1));
+						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".particle-effect")) {
+							String e = Mobs.getPlugin().getConfig().getString("mobs." + s + ".particle-effect");
 							for (ParticleEffectID effect : ParticleEffectID.values()) {
 								if (effect.toString().equalsIgnoreCase(e)) {
 									mob.setParticleEffect(effect.newHandler());
 								}
 							}
+						}
+						if (Mobs.getPlugin().getConfig().getConfigurationSection("mobs." + s + ".potion-effects") != null) {
+							List<PotionEffect> potionEffects = new ArrayList<PotionEffect>();
+							for (String e : Mobs.getPlugin().getConfig().getConfigurationSection("mobs." + s + ".potion-effects").getKeys(false)) {
+								PotionEffectType potionEffectType = PotionEffectType.getByName(e.toUpperCase());
+								int level = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".potion-effects." + e + ".level", 1) - 1;
+								int duration = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".potion-effects." + e + ".duration", 10000) * 20;
+								boolean ambient = Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".potion-effects." + e + ".ambient", false);
+								boolean particles = Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".potion-effects." + e + ".particles", false);
+								PotionEffect potionEffect = new PotionEffect(potionEffectType, duration, level, ambient, particles);
+								potionEffects.add(potionEffect);
+							}
+							mob.setPotionEffects(potionEffects);
 						}
 						mobs.add(mob);
 					}
