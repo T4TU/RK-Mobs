@@ -42,6 +42,7 @@ public class MobsListener implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onMobDeath(EntityDeathEvent e) {
 		Mob mob = Mobs.getMobManager().getMob(e.getEntity());
@@ -50,7 +51,7 @@ public class MobsListener implements Listener {
 				if (mob.isAlwaysDropFullDurability()) {
 					item.setDurability((short) 0);
 				}
-				if (CoreUtils.getDisplayName(item).equals("§cx") && item.getType() == Material.WOOD_BUTTON) {
+				if (CoreUtils.getDisplayName(item).equals("§cx") && item.getType() == Material.OAK_BUTTON) {
 					item.setAmount(0);
 				}
 			}

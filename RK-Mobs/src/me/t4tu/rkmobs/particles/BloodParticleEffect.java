@@ -5,8 +5,8 @@ import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
-import org.bukkit.material.MaterialData;
 
 public class BloodParticleEffect extends ParticleEffect {
 	
@@ -22,9 +22,9 @@ public class BloodParticleEffect extends ParticleEffect {
 		}
 		if (timers.get(entity.getEntityId()) >= 10) {
 			int r = new Random().nextInt(3) + 1;
-			MaterialData materialData = new MaterialData(Material.REDSTONE_BLOCK);
+			BlockData data = Material.REDSTONE_BLOCK.createBlockData();
 			entity.getWorld().spawnParticle(Particle.BLOCK_DUST, entity.getLocation().getX(), entity.getLocation().getY() + 1.25, entity.getLocation().getZ(), 
-					r, 0.1, 0.2, 0.1, 0.05f, materialData);
+					r, 0.1, 0.2, 0.1, 0.05f, data);
 			timers.remove(entity.getEntityId());
 		}
 		else {

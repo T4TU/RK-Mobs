@@ -1,8 +1,9 @@
 name: RK-Mobs
 author: T4TU_
 version: 2
-depend: [RK-Core]
 main: me.t4tu.rkmobs.Mobs
+depend: [RK-Core]
+api-version: 1.13
 commands:
     mobs:
     spawner:

@@ -34,7 +34,7 @@ public class HealAbility extends Ability {
 					e.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
 				}
 				if (i == 20) {
-					e.getWorld().playSound(e.getLocation(), Sound.ENTITY_EVOCATION_ILLAGER_PREPARE_SUMMON, 8, 1);
+					e.getWorld().playSound(e.getLocation(), Sound.ENTITY_EVOKER_PREPARE_SUMMON, 8, 1);
 					if (e.getHealth() + healAmount > e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) {
 						e.setHealth(e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 					}

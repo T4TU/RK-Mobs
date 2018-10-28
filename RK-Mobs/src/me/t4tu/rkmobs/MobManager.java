@@ -197,7 +197,7 @@ public class MobManager {
 			e.setCustomNameVisible(false);
 			e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(mob.getHealth());
 			e.setHealth(mob.getHealth());
-			ItemStack temp = CoreUtils.getItem(Material.WOOD_BUTTON, "§cx", null, 1);
+			ItemStack temp = CoreUtils.getItem(Material.OAK_BUTTON, "§cx", null, 1);
 			if (CoreUtils.isNotAir(mob.getHelmet()) || !mob.isCancelVanillaArmor()) {
 				e.getEquipment().setHelmet(mob.getHelmet());
 			}
