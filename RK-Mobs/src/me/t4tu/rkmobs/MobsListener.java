@@ -28,7 +28,11 @@ public class MobsListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onMobSpawn(CreatureSpawnEvent e) {
 		if (reasons.contains(e.getSpawnReason())) {
-			List<Mob> mobs = Mobs.getMobManager().getMobsByReplaceType(e.getEntityType());
+			int spawnArea = (int) e.getLocation().distance(e.getLocation().getWorld().getSpawnLocation()) / 2000 + 1;
+			if (spawnArea > 4) {
+				spawnArea = 4;
+			}
+			List<Mob> mobs = Mobs.getMobManager().getMobs(e.getEntityType(), spawnArea);
 			if (mobs.size() > 0) {
 				Mob mob = Mobs.getMobManager().getMobToSpawn(mobs);
 				if (mob != null) {
@@ -62,8 +66,8 @@ public class MobsListener implements Listener {
 	public void onMobDamage(EntityDamageEvent e) {
 		new BukkitRunnable() {
 			public void run() {
-				if (Mobs.getMobManager().getMob(e.getEntity()) != null) {
-					Mob mob = Mobs.getMobManager().getMob(e.getEntity());
+				Mob mob = Mobs.getMobManager().getMob(e.getEntity());
+				if (mob != null) {
 					LivingEntity entity = (LivingEntity) e.getEntity();
 					entity.setCustomName(mob.getDisplayName() + "§7 " + (int) entity.getHealth() + "♥");
 				}
@@ -72,11 +76,11 @@ public class MobsListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onMobRegeinHealth(EntityRegainHealthEvent e) {
+	public void onMobRegainHealth(EntityRegainHealthEvent e) {
 		new BukkitRunnable() {
 			public void run() {
-				if (Mobs.getMobManager().getMob(e.getEntity()) != null) {
-					Mob mob = Mobs.getMobManager().getMob(e.getEntity());
+				Mob mob = Mobs.getMobManager().getMob(e.getEntity());
+				if (mob != null) {
 					LivingEntity entity = (LivingEntity) e.getEntity();
 					entity.setCustomName(mob.getDisplayName() + "§7 " + (int) entity.getHealth() + "♥");
 				}

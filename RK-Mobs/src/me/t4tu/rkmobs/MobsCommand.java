@@ -36,11 +36,13 @@ public class MobsCommand implements CommandExecutor {
 									String displayName = args[2];
 									int health = Integer.parseInt(args[3]);
 									int spawnChance = Integer.parseInt(args[4]);
-									String type = args[5].toUpperCase();
-									String replaceType = args[6].toUpperCase();
+									int spawnArea = Integer.parseInt(args[5]);
+									String type = args[6].toUpperCase();
+									String replaceType = args[7].toUpperCase();
 									Mobs.getPlugin().getConfig().set("mobs." + name + ".displayname", displayName);
 									Mobs.getPlugin().getConfig().set("mobs." + name + ".health", health);
 									Mobs.getPlugin().getConfig().set("mobs." + name + ".spawnchance", spawnChance);
+									Mobs.getPlugin().getConfig().set("mobs." + name + ".spawnarea", spawnArea);
 									Mobs.getPlugin().getConfig().set("mobs." + name + ".type", type);
 									Mobs.getPlugin().getConfig().set("mobs." + name + ".replacetype", replaceType);
 									if (p.getInventory().getHelmet() != null) {
@@ -82,7 +84,7 @@ public class MobsCommand implements CommandExecutor {
 								}
 							}
 							else {
-								p.sendMessage(usage + "/mobs add <nimi> <näytettävä nimi> <elämät> <spawnaamisen todennäköisyys> <tyyppi> <korvattava tyyppi>");
+								p.sendMessage(usage + "/mobs add <nimi> <näytettävä nimi> <elämät> <spawnaamisen todennäköisyys> <spawn-alue> <tyyppi> <korvattava tyyppi>");
 							}
 						}
 						else if (args[0].equalsIgnoreCase("remove")) {
@@ -126,6 +128,7 @@ public class MobsCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " Nametag: " + tc2 + mob.getDisplayName());
 									p.sendMessage(tc1 + " Elämät: " + tc2 + mob.getHealth());
 									p.sendMessage(tc1 + " Spawnaamisen todennäköisyys: " + tc2 + mob.getSpawnChance());
+									p.sendMessage(tc1 + " Spawn-alue: " + tc2 + mob.getSpawnArea());
 									p.sendMessage(tc1 + " Tyyppi: " + tc2 + mob.getType().toString());
 									p.sendMessage(tc1 + " Korvattava tyyppi: " + tc2 + mob.getReplaceType().toString());
 									p.sendMessage(tc1 + " Kädessä oleva esine: " + tc2 + mob.getHand().getType().toString() + " (" + mob.getHandDropChance() + ")");

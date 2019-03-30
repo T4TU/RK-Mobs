@@ -15,6 +15,7 @@ public class Mob {
 	private String displayName;
 	private int health;
 	private int spawnChance;
+	private int spawnArea;
 	private EntityType type;
 	private EntityType replaceType;
 	private ItemStack helmet;
@@ -38,11 +39,12 @@ public class Mob {
 	private ParticleEffect particleEffect = null;
 	private List<PotionEffect> potionEffects = null;
 	
-	public Mob(String name, String displayName, int health, int spawnChance, EntityType type, EntityType replaceType, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack hand, List<Ability> abilities) {
+	public Mob(String name, String displayName, int health, int spawnChance, int spawnArea, EntityType type, EntityType replaceType, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack hand, List<Ability> abilities) {
 		this.name = name;
 		this.displayName = displayName;
 		this.health = health;
 		this.spawnChance = spawnChance;
+		this.spawnArea = spawnArea;
 		this.type = type;
 		this.replaceType = replaceType;
 		this.helmet = helmet;
@@ -67,6 +69,10 @@ public class Mob {
 	
 	public int getSpawnChance() {
 		return spawnChance;
+	}
+	
+	public int getSpawnArea() {
+		return spawnArea;
 	}
 	
 	public EntityType getType() {

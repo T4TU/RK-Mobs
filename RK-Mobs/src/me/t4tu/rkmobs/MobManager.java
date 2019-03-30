@@ -64,10 +64,10 @@ public class MobManager {
 		return null;
 	}
 	
-	public List<Mob> getMobsByReplaceType(EntityType type) {
+	public List<Mob> getMobs(EntityType type, int spawnArea) {
 		List<Mob> mobsByType = new ArrayList<Mob>();
 		for (Mob mob : mobs) {
-			if (mob.getReplaceType() == type) {
+			if (mob.getReplaceType() == type && mob.getSpawnArea() == spawnArea) {
 				mobsByType.add(mob);
 			}
 		}
@@ -264,6 +264,7 @@ public class MobManager {
 						String displayName = ChatColor.translateAlternateColorCodes('&', Mobs.getPlugin().getConfig().getString("mobs." + s + ".displayname").replace("_", " "));
 						int health = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".health");
 						int spawnChance = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".spawnchance");
+						int spawnArea = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".spawnarea");
 						EntityType type = EntityType.valueOf(Mobs.getPlugin().getConfig().getString("mobs." + s + ".type").toUpperCase());
 						EntityType replaceType = EntityType.valueOf(Mobs.getPlugin().getConfig().getString("mobs." + s + ".replacetype").toUpperCase());
 						ItemStack helmet = (ItemStack) Mobs.getPlugin().getConfig().get("mobs." + s + ".helmet");
@@ -284,7 +285,7 @@ public class MobManager {
 								}
 							}
 						}
-						Mob mob = new Mob(name, displayName, health, spawnChance, type, replaceType, helmet, chestplate, leggings, boots, hand, abilities);
+						Mob mob = new Mob(name, displayName, health, spawnChance, spawnArea, type, replaceType, helmet, chestplate, leggings, boots, hand, abilities);
 						mob.setBaby(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".baby", false));
 						mob.setSilent(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".silent", false));
 						mob.setRemoveWhenFarAway(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".remove-when-far-away", true));
