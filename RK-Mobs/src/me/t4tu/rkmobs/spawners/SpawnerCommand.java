@@ -190,11 +190,11 @@ public class SpawnerCommand implements CommandExecutor {
 							p.sendMessage(tc2 + "Uudelleenladattiin kaikki spawnerit!");
 						}
 						else {
-							p.sendMessage(usage + "/spawner <add/remove/list/info/listloc/addloc/removeloc/reload>");
+							p.sendMessage(usage + "/spawner add/remove/list/info/listloc/addloc/removeloc/reload");
 						}
 					}
 					else {
-						p.sendMessage(usage + "/spawner <add/remove/list/info/listloc/addloc/removeloc/reload>");
+						p.sendMessage(usage + "/spawner add/remove/list/info/listloc/addloc/removeloc/reload");
 					}
 				}
 				else {

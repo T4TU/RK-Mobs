@@ -199,11 +199,11 @@ public class MobsCommand implements CommandExecutor {
 							p.sendMessage(tc2 + "Uudelleenladattiin kaikki mobit!");
 						}
 						else {
-							p.sendMessage(usage + "/mobs <add/remove/list/info/spawn/reload>");
+							p.sendMessage(usage + "/mobs add/remove/list/info/spawn/reload");
 						}
 					}
 					else {
-						p.sendMessage(usage + "/mobs <add/remove/list/info/spawn/reload>");
+						p.sendMessage(usage + "/mobs add/remove/list/info/spawn/reload");
 					}
 				}
 				else {
