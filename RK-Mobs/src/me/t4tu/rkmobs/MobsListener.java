@@ -3,7 +3,9 @@ package me.t4tu.rkmobs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -15,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,8 +25,11 @@ import me.t4tu.rkcore.utils.CoreUtils;
 
 public class MobsListener implements Listener {
 	
-	private static final List<SpawnReason> reasons = Arrays.asList(SpawnReason.CHUNK_GEN, SpawnReason.NATURAL, SpawnReason.ENDER_PEARL, SpawnReason.DISPENSE_EGG, SpawnReason.SLIME_SPLIT, 
-			SpawnReason.LIGHTNING, SpawnReason.JOCKEY, SpawnReason.REINFORCEMENTS, SpawnReason.SPAWNER, SpawnReason.SILVERFISH_BLOCK, SpawnReason.MOUNT, SpawnReason.EGG);
+	@SuppressWarnings("deprecation")
+	private static final List<SpawnReason> reasons = Arrays.asList(SpawnReason.NATURAL, SpawnReason.ENDER_PEARL, SpawnReason.DISPENSE_EGG, SpawnReason.SLIME_SPLIT, SpawnReason.LIGHTNING, 
+			SpawnReason.JOCKEY, SpawnReason.REINFORCEMENTS, SpawnReason.SPAWNER, SpawnReason.SPAWNER_EGG, SpawnReason.BUILD_IRONGOLEM, SpawnReason.BUILD_SNOWMAN, SpawnReason.BUILD_WITHER, 
+			SpawnReason.VILLAGE_INVASION, SpawnReason.VILLAGE_DEFENSE, SpawnReason.INFECTION, SpawnReason.CURED, SpawnReason.SILVERFISH_BLOCK, SpawnReason.MOUNT, SpawnReason.EGG, 
+			SpawnReason.BREEDING, SpawnReason.OCELOT_BABY, SpawnReason.DROWNED, SpawnReason.CHUNK_GEN);
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onMobSpawn(CreatureSpawnEvent e) {
@@ -41,6 +47,20 @@ public class MobsListener implements Listener {
 							Mobs.getMobManager().spawnMob(mob, e.getEntity());
 						}
 					}.runTaskLater(Mobs.getPlugin(), 2);
+				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onChunkLoad(ChunkLoadEvent e) {
+		if (e.isNewChunk()) {
+			for (Entity entity : e.getChunk().getEntities()) {
+				if (entity instanceof LivingEntity) {
+					LivingEntity livingEntity = (LivingEntity) entity;
+					CreatureSpawnEvent spawnEvent = new CreatureSpawnEvent(livingEntity, SpawnReason.CHUNK_GEN);
+					Bukkit.getPluginManager().callEvent(spawnEvent);
 				}
 			}
 		}
