@@ -11,7 +11,7 @@ public class SubSpawner {
 	public SubSpawner(Spawner parent, Location location) {
 		this.parent = parent;
 		this.location = location;
-		lastSpawn = 0;
+		lastSpawn = parent.getSpawnDelay();
 	}
 	
 	public Spawner getParent() {

@@ -40,16 +40,9 @@ public class MobManager {
 	public Mob getMob(Entity entity) {
 		if (entity instanceof LivingEntity) {
 			LivingEntity e = (LivingEntity) entity;
-			if (e.getCustomName() != null) {
-				for (Mob mob : mobs) {
-					if (e.getType() == mob.getType()) {
-						if (e.getCustomName().split("§7 ")[0].equals(mob.getDisplayName())) {
-							if (e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() == mob.getHealth()) {
-								return mob;
-							}
-						}
-					}
-				}
+			if (e.getScoreboardTags().size() > 0) {
+				Mob mob = getMob((String) e.getScoreboardTags().toArray()[0]);
+				return mob;
 			}
 		}
 		return null;
@@ -248,6 +241,7 @@ public class MobManager {
 			if (mob.getPotionEffects() != null && !mob.getPotionEffects().isEmpty()) {
 				e.addPotionEffects(mob.getPotionEffects());
 			}
+			e.addScoreboardTag(mob.getName());
 		}
 		else {
 			Bukkit.getConsoleSender().sendMessage("Ei voitu spawnata mobia '" + mob.getName() + "', ei ole LivingEntity");
@@ -314,7 +308,7 @@ public class MobManager {
 								int duration = Mobs.getPlugin().getConfig().getInt("mobs." + s + ".potion-effects." + e + ".duration", 10000) * 20;
 								boolean ambient = Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".potion-effects." + e + ".ambient", false);
 								boolean particles = Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".potion-effects." + e + ".particles", false);
-								PotionEffect potionEffect = new PotionEffect(potionEffectType, duration, level, ambient, particles);
+								PotionEffect potionEffect = new PotionEffect(potionEffectType, duration, level - 1, ambient, particles);
 								potionEffects.add(potionEffect);
 							}
 							mob.setPotionEffects(potionEffects);
