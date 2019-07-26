@@ -141,8 +141,10 @@ public class MobsCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " Itsestään despawnaava: " + tc2 + mob.isRemovedWhenFarAway());
 									p.sendMessage(tc1 + " Tiputa vain ehjiä esineitä: " + tc2 + mob.isAlwaysDropFullDurability());
 									p.sendMessage(tc1 + " Estä Vanilla-armorit: " + tc2 + mob.isCancelVanillaArmor());
+									p.sendMessage(tc1 + " Estä Vanilla-ikä: " + tc2 + mob.isCancelVanillaAge());
 									p.sendMessage(tc1 + " Nopeus: " + tc2 + mob.getSpeed());
 									p.sendMessage(tc1 + " Hyökkäyksen voimakkuus: " + tc2 + mob.getAttackDamage());
+									p.sendMessage(tc1 + " Custom mob -indeksi: " + tc2 + mob.getCustomMobIndex());
 									if (mob.getParticleEffect() != null) {
 										p.sendMessage(tc1 + " Partikkeliefekti: " + tc2 + mob.getParticleEffect().getName() + " (" + mob.getParticleEffect().getID().toString() + ")");
 									}

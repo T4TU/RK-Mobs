@@ -18,6 +18,7 @@ public class Mobs extends JavaPlugin {
 	private static MobsCommand mobsCommand = new MobsCommand();
 	private static SpawnerManager spawnerManager = new SpawnerManager();
 	private static SpawnerCommand spawnerCommand = new SpawnerCommand();
+	private static CustomMobManager customMobManager = new CustomMobManager();
 	
 	private void registerCommand(String s, CommandExecutor c, boolean tabCompletion) {
 		getCommand(s).setExecutor(c);
@@ -84,5 +85,9 @@ public class Mobs extends JavaPlugin {
 	
 	public static SpawnerCommand getSpawnerCommand() {
 		return spawnerCommand;
+	}
+	
+	public static CustomMobManager getCustomMobManager() {
+		return customMobManager;
 	}
 }

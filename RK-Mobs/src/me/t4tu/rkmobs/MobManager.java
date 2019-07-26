@@ -14,10 +14,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import me.t4tu.rkcore.utils.CoreUtils;
 import me.t4tu.rkmobs.abilities.Ability;
 import me.t4tu.rkmobs.abilities.HealAbility;
@@ -186,6 +186,11 @@ public class MobManager {
 				e.remove();
 				e = (LivingEntity) location.getWorld().spawnEntity(location, mob.getType());
 			}
+			if (mob.getCustomMobIndex() != -1) {
+				Location location = e.getLocation();
+				e.remove();
+				e = (LivingEntity) Mobs.getCustomMobManager().spawnEntity(mob.getCustomMobIndex(), location);
+			}
 			e.setCustomName(mob.getDisplayName() + "§7 " + (int) mob.getHealth() + "❤");
 			e.setCustomNameVisible(false);
 			e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(mob.getHealth());
@@ -227,13 +232,24 @@ public class MobManager {
 			if (mob.getAttackDamage() != -1) {
 				e.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(mob.getAttackDamage());
 			}
-			if (e instanceof Ageable) {
-				Ageable ageable = (Ageable) e;
-				if (mob.isBaby()) {
-					ageable.setBaby();
+			if (mob.isCancelVanillaAge()) {
+				if (e instanceof Zombie) {
+					Zombie zombie = (Zombie) e;
+					if (mob.isBaby()) {
+						zombie.setBaby(true);
+					}
+					else {
+						zombie.setBaby(false);
+					}
 				}
-				else {
-					ageable.setAdult();
+				else if (e instanceof Ageable) {
+					Ageable ageable = (Ageable) e;
+					if (mob.isBaby()) {
+						ageable.setBaby();
+					}
+					else {
+						ageable.setAdult();
+					}
 				}
 			}
 			e.setSilent(mob.isSilent());
@@ -285,6 +301,7 @@ public class MobManager {
 						mob.setRemoveWhenFarAway(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".remove-when-far-away", true));
 						mob.setAlwaysDropFullDurability(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".always-drop-full-durability", false));
 						mob.setCancelVanillaArmor(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".cancel-vanilla-armor", false));
+						mob.setCancelVanillaAge(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".cancel-vanilla-age", false));
 						mob.setHelmetDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".helmet-drop-chance", 0));
 						mob.setChestplateDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".chestplate-drop-chance", 0));
 						mob.setLeggingsDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".leggings-drop-chance", 0));
@@ -292,6 +309,7 @@ public class MobManager {
 						mob.setHandDropChance((float) Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".hand-drop-chance", 0));
 						mob.setSpeed(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".speed", -1));
 						mob.setAttackDamage(Mobs.getPlugin().getConfig().getDouble("mobs." + s + ".attack-damage", -1));
+						mob.setCustomMobIndex(Mobs.getPlugin().getConfig().getInt("mobs." + s + ".custom-mob-index", -1));
 						if (Mobs.getPlugin().getConfig().contains("mobs." + s + ".particle-effect")) {
 							String e = Mobs.getPlugin().getConfig().getString("mobs." + s + ".particle-effect");
 							for (ParticleEffectID effect : ParticleEffectID.values()) {

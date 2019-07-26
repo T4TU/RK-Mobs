@@ -29,6 +29,7 @@ public class Mob {
 	private boolean removeWhenFarAway = true;
 	private boolean alwaysDropFullDurability = false;
 	private boolean cancelVanillaArmor = false;
+	private boolean cancelVanillaAge = false;
 	private float helmetDropChance = 0;
 	private float chestplateDropChance = 0;
 	private float leggingsDropChance = 0;
@@ -36,6 +37,7 @@ public class Mob {
 	private float handDropChance = 0;
 	private double speed = -1;
 	private double attackDamage = -1;
+	private int customMobIndex = -1;
 	private ParticleEffect particleEffect = null;
 	private List<PotionEffect> potionEffects = null;
 	
@@ -127,6 +129,10 @@ public class Mob {
 		return cancelVanillaArmor;
 	}
 	
+	public boolean isCancelVanillaAge() {
+		return cancelVanillaAge;
+	}
+	
 	public float getHelmetDropChance() {
 		return helmetDropChance;
 	}
@@ -153,6 +159,10 @@ public class Mob {
 	
 	public double getAttackDamage() {
 		return attackDamage;
+	}
+	
+	public int getCustomMobIndex() {
+		return customMobIndex;
 	}
 	
 	public ParticleEffect getParticleEffect() {
@@ -183,6 +193,10 @@ public class Mob {
 		this.cancelVanillaArmor = cancelVanillaArmor;
 	}
 	
+	public void setCancelVanillaAge(boolean cancelVanillaAge) {
+		this.cancelVanillaAge = cancelVanillaAge;
+	}
+	
 	public void setHelmetDropChance(float helmetDropChance) {
 		this.helmetDropChance = helmetDropChance;
 	}
@@ -209,6 +223,10 @@ public class Mob {
 	
 	public void setAttackDamage(double attackDamage) {
 		this.attackDamage = attackDamage;
+	}
+	
+	public void setCustomMobIndex(int customMobIndex) {
+		this.customMobIndex = customMobIndex;
 	}
 	
 	public void setParticleEffect(ParticleEffect particleEffect) {
