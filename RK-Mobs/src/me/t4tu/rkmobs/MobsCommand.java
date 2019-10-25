@@ -139,6 +139,7 @@ public class MobsCommand implements CommandExecutor {
 									p.sendMessage(tc1 + " Vauva: " + tc2 + mob.isBaby());
 									p.sendMessage(tc1 + " Hiljainen: " + tc2 + mob.isSilent());
 									p.sendMessage(tc1 + " Itsestään despawnaava: " + tc2 + mob.isRemovedWhenFarAway());
+									p.sendMessage(tc1 + " Ei spawnaa spawnereista: " + tc2 + mob.isDisabledSpawners());
 									p.sendMessage(tc1 + " Tiputa vain ehjiä esineitä: " + tc2 + mob.isAlwaysDropFullDurability());
 									p.sendMessage(tc1 + " Estä Vanilla-armorit: " + tc2 + mob.isCancelVanillaArmor());
 									p.sendMessage(tc1 + " Estä Vanilla-ikä: " + tc2 + mob.isCancelVanillaAge());

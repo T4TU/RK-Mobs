@@ -40,7 +40,7 @@ public class MobsListener implements Listener {
 			}
 			List<Mob> mobs = Mobs.getMobManager().getMobs(e.getEntityType(), spawnArea);
 			if (mobs.size() > 0) {
-				Mob mob = Mobs.getMobManager().getMobToSpawn(mobs);
+				Mob mob = Mobs.getMobManager().getMobToSpawn(mobs, e.getSpawnReason());
 				if (mob != null) {
 					new BukkitRunnable() {
 						public void run() {

@@ -15,6 +15,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -164,9 +165,12 @@ public class MobManager {
 		return null;
 	}
 	
-	public Mob getMobToSpawn(List<Mob> mobs) {
+	public Mob getMobToSpawn(List<Mob> mobs, SpawnReason reason) {
 		List<Mob> mobsSpawnChances = new ArrayList<Mob>();
 		for (Mob mob : mobs) {
+			if (reason != null && (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG || reason == SpawnReason.DISPENSE_EGG) && mob.isDisabledSpawners()) {
+				continue;
+			}
 			for (int i = 0 ; i < mob.getSpawnChance() ; i++) {
 				mobsSpawnChances.add(mob);
 			}
@@ -299,6 +303,7 @@ public class MobManager {
 						mob.setBaby(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".baby", false));
 						mob.setSilent(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".silent", false));
 						mob.setRemoveWhenFarAway(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".remove-when-far-away", true));
+						mob.setRemoveWhenFarAway(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".disable-spawners", false));
 						mob.setAlwaysDropFullDurability(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".always-drop-full-durability", false));
 						mob.setCancelVanillaArmor(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".cancel-vanilla-armor", false));
 						mob.setCancelVanillaAge(Mobs.getPlugin().getConfig().getBoolean("mobs." + s + ".cancel-vanilla-age", false));

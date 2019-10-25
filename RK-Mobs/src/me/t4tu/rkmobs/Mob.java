@@ -27,6 +27,7 @@ public class Mob {
 	private boolean baby = false;
 	private boolean silent = false;
 	private boolean removeWhenFarAway = true;
+	private boolean disableSpawners = false;
 	private boolean alwaysDropFullDurability = false;
 	private boolean cancelVanillaArmor = false;
 	private boolean cancelVanillaAge = false;
@@ -121,6 +122,10 @@ public class Mob {
 		return removeWhenFarAway;
 	}
 	
+	public boolean isDisabledSpawners() {
+		return disableSpawners;
+	}
+	
 	public boolean isAlwaysDropFullDurability() {
 		return alwaysDropFullDurability;
 	}
@@ -183,6 +188,10 @@ public class Mob {
 	
 	public void setRemoveWhenFarAway(boolean removeWhenFarAway) {
 		this.removeWhenFarAway = removeWhenFarAway;
+	}
+	
+	public void setDisableSpawners(boolean disableSpawners) {
+		this.disableSpawners = disableSpawners;
 	}
 	
 	public void setAlwaysDropFullDurability(boolean alwaysDropFullDurability) {
