@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -109,6 +110,7 @@ public class SpawnerManager {
 					Location l = getSpawnLocation(subSpawner, r);
 					if (l != null) {
 						LivingEntity replaceEntity = (LivingEntity) location.getWorld().spawnEntity(l, spawner.getMob().getType());
+						location.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l.getX(), l.getY() + replaceEntity.getEyeHeight() / 2, l.getZ(), 30, 0, 0.5, 0, 0.05);
 						Mobs.getMobManager().spawnMob(spawner.getMob(), replaceEntity);
 					}
 				}
